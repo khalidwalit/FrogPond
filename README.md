@@ -29,9 +29,9 @@ What this does is it sets sail to point to the vendor/bin/sail script, so that y
 
 ## Laravel Sail Commands
 
-sail up :to run the docker container.
-sail up -d :to run in detact mode. -d stand for detached
-sail down :to turn down the docker container.
+- sail up :to run the docker container.
+- sail up -d :to run in detact mode. -d stand for detached
+- sail down :to turn down the docker container.
 
 Normally will use php artisan migrate.
 By using sail, can easily just use command like
