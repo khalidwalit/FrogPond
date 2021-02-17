@@ -50,7 +50,7 @@ class FrogsController extends Controller
         if($respond->status() != 500){
           $frog->save();
         }
-        // $respond = ["message" => "Saved", 200];
+        $respond = ["message" => "Saved", 200];
       } else {
         $respond = ["message" => "Pond not exist", 404];
       }
@@ -62,19 +62,28 @@ class FrogsController extends Controller
       if (Frog::where('id', $id)->exists()) {
         $frog = Frog::find($id);
 
-        $frog->name = is_null($request->name) ? $frog->name : $request->name;
-        $frog->gender = is_null($request->gender) ? $frog->gender : $request->gender;
-        $frog->date_of_birth = is_null($request->date_of_birth) ? $frog->date_of_birth : date("Y-m-d", strtotime($request->date_of_birth));
-        $frog->date_of_death = is_null($request->date_of_death) ? $frog->date_of_death : date("Y-m-d", strtotime($request->date_of_death));
-        $frog->pond_number = is_null($request->pond_number) ? $frog->pond_number : $request->pond_number;
-        $frog->save();
+        $isDead = is_null($frog->date_of_death) ? false : true;
 
-        if($frog->date_of_death != null) {
-          $this->PondsController->updateFrogtoPond($frog->pond_number, "removeFrog");
+        if(!$isDead) {
+
+          $frog->name = is_null($request->name) ? $frog->name : $request->name;
+          $frog->gender = is_null($request->gender) ? $frog->gender : $request->gender;
+          $frog->date_of_birth = is_null($request->date_of_birth) ? $frog->date_of_birth : date("Y-m-d", strtotime($request->date_of_birth));
+          $frog->date_of_death = is_null($request->date_of_death) ? $frog->date_of_death : date("Y-m-d", strtotime($request->date_of_death));
+          $frog->pond_number = is_null($request->pond_number) ? $frog->pond_number : $request->pond_number;
+          $frog->save();
+
+          if($frog->date_of_death) {
+            $this->PondsController->updateFrogtoPond($frog->pond_number, "removeFrog");
+          }
+
+          return response()->json([
+            "message" => "records updated successfully"
+          ], 200);
         }
 
         return response()->json([
-          "message" => "records updated successfully"
+          "message" => "Frog already dead"
         ], 200);
       } else {
         return response()->json([

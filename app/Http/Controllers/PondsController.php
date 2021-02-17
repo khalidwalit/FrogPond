@@ -5,16 +5,8 @@ use App\Models\Pond;
 
 use Illuminate\Http\Request;
 
-// use App\Http\Controllers\FrogsController;
-
 class PondsController extends Controller
 {
-
-    // protected $FrogsController;
-    // public function __construct(FrogsController $FrogsController)
-    // {
-    //     $this->FrogsController = $FrogsController;
-    // }
 
     public function getAllPonds() {
         $ponds = Pond::get()->toJson(JSON_PRETTY_PRINT);
@@ -71,17 +63,18 @@ class PondsController extends Controller
       public function deletePond ($id) {
         if(Pond::where('id', $id)->exists()) {
           $pond = Pond::find($id);
-          
-          $pond->delete();
-  
-          return response()->json([
-            "message" => "records deleted"
-          ], 202);
+
+          if($pond->current_size != 0){
+            $respond = ["message" => "Please empty pond before delete", 200];
+          } else {
+            $pond->delete();
+            $respond = ["message" => "records deleted", 200];
+          }
         } else {
-          return response()->json([
-            "message" => "Pond not found"
-          ], 404);
+          $respond = ["message" => "Pond not found", 200];
         }
+
+        return response()->json($respond);
       }
 
       public function updateFrogtoPond($id, $operation) {
@@ -92,7 +85,6 @@ class PondsController extends Controller
         } else if ($operation == "removeFrog"){ 
             $pond->current_size -= 1; 
         }
-        
 
         if($pond->current_size > $pond->capacity )
         {
