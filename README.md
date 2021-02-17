@@ -18,12 +18,13 @@ In order to get started with Laravel Sail, all that you need is to have Docker a
 Clone and pull this project to ur machine.
 
 Run this command :
-curl -s https://laravel.build/frogpond | bash
+docker-compose up //This will pull all the images required to build the container for the project.
 
 By default, Sail commands are invoked using the vendor/bin/sail
 
 Run:
 alias sail='bash vendor/bin/sail'
+sail up //will run the container
 
 What this does is it sets sail to point to the vendor/bin/sail script, so that you can execute Sail commands without having to type vendor/bin each time.
 
