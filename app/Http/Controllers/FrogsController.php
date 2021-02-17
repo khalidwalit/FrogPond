@@ -45,8 +45,6 @@ class FrogsController extends Controller
         
         $respond = $this->PondsController->updateFrogtoPond($request->pond_number, "addFrog");
 
-        echo $respond;
-
         if($respond->status() != 500){
           $frog->save();
         }
@@ -95,7 +93,6 @@ class FrogsController extends Controller
     public function deleteFrog ($id) {
       if(Frog::where('id', $id)->exists()) {
         $frog = Frog::find($id);
-        echo $frog->pond_number;
         $this->PondsController->updateFrogtoPond($frog->pond_number, "removeFrog");
         $frog->delete();
 

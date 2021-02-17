@@ -29,7 +29,6 @@ class PondsController extends Controller
         $pond->pond_name = $request->pond_name;
         $pond->capacity = $request->capacity;
         $pond->current_size = is_null($request->current_size) ? null : $request->current_size;
-        echo($pond->current_size);
   
         $pond->save();
   
@@ -39,11 +38,8 @@ class PondsController extends Controller
       }
   
       public function updatePond(Request $request, $id) {
-          echo $request;
         if (Pond::where('id', $id)->exists()) {
           $pond = Pond::find($id);
-  
-          echo($request->pond_name);
   
           $pond->pond_name = is_null($request->pond_name) ? $pond->pond_name : $request->pond_name;
           $pond->capacity = is_null($request->capacity) ? $pond->capacity : $request->capacity;
