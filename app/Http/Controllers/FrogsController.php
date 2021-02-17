@@ -45,9 +45,12 @@ class FrogsController extends Controller
         
         $respond = $this->PondsController->updateFrogtoPond($request->pond_number, "addFrog");
 
+        echo $respond;
+
         if($respond->status() != 500){
           $frog->save();
         }
+        // $respond = ["message" => "Saved", 200];
       } else {
         $respond = ["message" => "Pond not exist", 404];
       }
@@ -65,6 +68,10 @@ class FrogsController extends Controller
         $frog->date_of_death = is_null($request->date_of_death) ? $frog->date_of_death : date("Y-m-d", strtotime($request->date_of_death));
         $frog->pond_number = is_null($request->pond_number) ? $frog->pond_number : $request->pond_number;
         $frog->save();
+
+        if($frog->date_of_death != null) {
+          $this->PondsController->updateFrogtoPond($frog->pond_number, "removeFrog");
+        }
 
         return response()->json([
           "message" => "records updated successfully"

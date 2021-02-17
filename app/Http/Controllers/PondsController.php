@@ -5,16 +5,16 @@ use App\Models\Pond;
 
 use Illuminate\Http\Request;
 
-use App\Http\Controllers\FrogsController;
+// use App\Http\Controllers\FrogsController;
 
 class PondsController extends Controller
 {
 
-    protected $FrogsController;
-    public function __construct(FrogsController $FrogsController)
-    {
-        $this->FrogsController = $FrogsController;
-    }
+    // protected $FrogsController;
+    // public function __construct(FrogsController $FrogsController)
+    // {
+    //     $this->FrogsController = $FrogsController;
+    // }
 
     public function getAllPonds() {
         $ponds = Pond::get()->toJson(JSON_PRETTY_PRINT);
@@ -42,7 +42,7 @@ class PondsController extends Controller
         $pond->save();
   
         return response()->json([
-          "message" => "Frog record created"
+          "message" => "Pond record created"
         ], 201);
       }
   
